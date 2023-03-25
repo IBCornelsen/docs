@@ -1,10 +1,18 @@
 ---
-const { docs } = Astro.props;
+import type { CollectionEntry } from 'astro:content';
+export type Props = {
+	docs: Record<string, CollectionEntry<"docs">>,
+	lang: string
+}
+
+const { docs, lang } = Astro.props;
 const sections: Record<string, any[]> = {}
 
-for (const article of docs) {
+const docsArray = Object.values(docs)
+for (const article of docsArray) {
 	const property = article.data.section || "";
   sections[property] = sections[property] || [];
+	article.slug = `${lang}/${article.slug}` as CollectionEntry<"docs">["slug"];
   sections[property].push(article);
 }
 ---

@@ -1,0 +1,7 @@
+export default {
+	"getting-started": "Erste Schritte",
+	"have-questions": "Noch Fragen?",
+	"still-have-questions": "Sprechen sie unseren Support an, falls noch Fragen offen sind.",
+	"previous": "Zurück",
+	"next": "Weiter"
+};

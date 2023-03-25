@@ -1,25 +1,26 @@
 <script lang="ts">
 	import type { CollectionEntry } from "astro:content";
 
-	export let docs: CollectionEntry<"docs">[];
+	export let docs: Record<string, CollectionEntry<"docs">>;
 	export let url: string;
 
 	type Entry = CollectionEntry<"docs"> | undefined;
 
 	let last: Entry, next: Entry;
-	for (let i = 0; i < docs.length; i++) {
-		const article = docs[i];
+	let docsArray = Object.values(docs);
+	for (let i = 0; i < docsArray.length; i++) {
+		const article = docsArray[i];
 
 		if (article.slug === url) {
-			last = docs[i - 1];
-			next = docs[i + 1];
+			last = docsArray[i - 1];
+			next = docsArray[i + 1];
 			break;
 		}
 	}
 </script>
 
 <dl
-	class="flex pt-6 mt-6 border-t border-slate-200 max-w-[1200px] mx-auto w-full"
+	class="flex pt-6 mt-6 border-t border-slate-200 max-w-[1400px] mx-auto w-full"
 >
 	{#if last}
 		<div class="mr-auto text-left">

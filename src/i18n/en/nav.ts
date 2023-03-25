@@ -1,0 +1,7 @@
+export default {
+	"getting-started": "Getting Started",
+	"have-questions": "Got questions?",
+	"still-have-questions": "Still have questions? Let's have a chat!",
+	"previous": "Previous",
+	"next": "Next"
+};

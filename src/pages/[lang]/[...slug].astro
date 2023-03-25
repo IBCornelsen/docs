@@ -1,12 +1,12 @@
 ---
 import { CollectionEntry, getCollection } from "astro:content";
-import Layout from "../layouts/Layout.astro";
+import Layout from "../../layouts/Layout.astro";
 
 export async function getStaticPaths() {
 	const allPages = await getCollection("docs")
 	return allPages.map((page) => {
 		return {
-			params: { slug: page.slug.replace(/[0-9\-]+/g, "") },
+			params: { slug: page.slug.replace(/(?:[0-9]+-)+/g, "").replace(/.*?\//, ""), lang: page.slug.split("/")[0] },
 			props: page
 		}
 	})
@@ -18,6 +18,6 @@ const { Content, headings } = await render();
 
 ---
 
-<Layout {...{ headings, content: data }}>
+<Layout {...{ headings, content: data, lang: Astro.params.lang }}>
 	<Content />
 </Layout>

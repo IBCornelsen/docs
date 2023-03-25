@@ -4,7 +4,8 @@ import Navigation from '../components/Navigation.astro';
 import ContentNavigation from '../components/ContentNavigation.svelte';
 import ContentFooter from '../components/ContentFooter.astro';
 import type { MarkdownHeading } from 'astro';
-import { getCollection } from 'astro:content';
+import { CollectionEntry, getCollection } from 'astro:content';
+import { getLangFromSlug, normalizeSlug, stripLangFromSlug } from '../util/language';
 
 export interface Props {
 	content: {
@@ -12,17 +13,26 @@ export interface Props {
 		section: string;
 		description: string;
 	}
-	headings: MarkdownHeading[]
+	headings: MarkdownHeading[],
+	lang: string;
 }
 
 
-const { content, headings } = Astro.props;
+const { content, headings, lang } = Astro.props;
 
 const docs = await getCollection("docs")
+const entries: Record<string, CollectionEntry<"docs">> = {};
 for (let i = 0; i < docs.length; i++) {
 	const article = docs[i];
+	let slugLanguage = getLangFromSlug(article.slug);
 
-	article.slug = article.slug.replace(/[0-9\-]+/g, "");
+	if (slugLanguage !== lang) {
+		continue;
+	}
+	const normalized = normalizeSlug(article.slug);
+	const slug = stripLangFromSlug(normalized)
+	article.slug = normalizeSlug(slug)
+	entries[slug] = article;
 }
 ---
 
@@ -38,10 +48,10 @@ for (let i = 0; i < docs.length; i++) {
   <Header />
 
   <main class="pb-8 relative flex justify-center mx-auto max-w-8xl sm:px-2 lg:px-8 xl:px-12 bg-primary">
-    <Navigation docs={docs} />
+    <Navigation docs={entries} lang={lang} />
 
     <div class="flex-auto min-w-0 px-4 py-10 lg:max-w-none lg:pr-0 lg:pl-8 xl:px-16">
-      <article class="max-w-[1200px] mx-auto w-full">
+      <article class="max-w-[1400px] mx-auto w-full">
         <header>
           <p class="text-base font-medium text-slate-500">
             {content.section}
@@ -60,10 +70,8 @@ for (let i = 0; i < docs.length; i++) {
           <slot />
         </div>
 
-        <ContentFooter />
+        <ContentFooter lang={lang} docs={entries} url={Astro.url.pathname.substring(1)} />
       </article>
-
-      <ContentNavigation docs={docs} url={Astro.url.pathname.substring(1)} />
     </div>
   </main>
 </body>
