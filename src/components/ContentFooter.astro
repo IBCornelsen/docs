@@ -1,6 +1,8 @@
 ---
-import type { NavigationLanguageConfiguration } from "../i18n/types";
 import type { CollectionEntry } from "astro:content";
+import { i18nInit, t } from '../lib/i18n/utils';
+
+i18nInit(Astro)
 
 export type Props = {
 	lang: string;
@@ -22,20 +24,14 @@ for (let i = 0; i < docsArray.length; i++) {
 		break;
 	}
 }
-
-const module = await import(
-	`../i18n/${lang}/nav.ts`
-);
-
-const languageConfiguration: NavigationLanguageConfiguration = module.default;
 ---
 
 <h3 class="mt-8 text-base font-bold tracking-tight text-slate-900">
-	{languageConfiguration["have-questions"]}
+	{t("have-questions")}
 </h3>
 
 <p class="text-slate-900">
-	{languageConfiguration["still-have-questions"]}
+	{t("still-have-questions")}
 </p>
 <dl
 	class="flex pt-6 mt-6 border-t border-slate-200 max-w-[1400px] mx-auto w-full"
@@ -44,7 +40,7 @@ const languageConfiguration: NavigationLanguageConfiguration = module.default;
 		last && (
 			<div class="mr-auto text-left">
 				<dt class="text-sm font-normal tracking-tight text-slate-600">
-					{languageConfiguration["previous"]}
+					{t("previous")}
 				</dt>
 				<dd class="mt-1">
 					<a
@@ -62,7 +58,7 @@ const languageConfiguration: NavigationLanguageConfiguration = module.default;
 		next && (
 			<div class="ml-auto text-right">
 				<dt class="text-sm font-normal tracking-tight text-slate-600">
-					{languageConfiguration["next"]}
+					{t("next")}
 				</dt>
 				<dd class="mt-1">
 					<a

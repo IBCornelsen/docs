@@ -1,0 +1,41 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { getFallbacks } from '../../lib/getFallbacks';
+import { getPaths } from '../../lib/getPaths';
+
+export async function getStaticPaths() {
+  const allData = await getCollection("docs");
+
+  const paths = getPaths(allData);
+	const fallbacks = getFallbacks(allData);
+
+  // Filter out any results with an undefined locale or slug.
+  return [...paths, ...fallbacks].filter(({params}) =>
+    !!params.locale && !!params.slug
+  );
+}
+
+type Props = {
+	page: {
+		id: string,
+		slug: string,
+		body: string,
+		data: any,
+		render: any
+	}
+}
+
+const { page, redirect } = Astro.props;
+let Content;
+if (page) {
+	Content = (await page.render()).Content;
+}
+---
+
+{redirect
+  ? <head><meta http-equiv="refresh" content={`0; url=${redirect}`}></head>
+  : <Layout {...{ content: page.data, lang: Astro.params.locale as string }}>
+      <Content />
+    </Layout>
+}

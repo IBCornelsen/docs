@@ -1,11 +1,10 @@
 ---
 import Header from '../components/Header.astro';
 import Navigation from '../components/Navigation.astro';
-import ContentNavigation from '../components/ContentNavigation.svelte';
 import ContentFooter from '../components/ContentFooter.astro';
-import type { MarkdownHeading } from 'astro';
 import { CollectionEntry, getCollection } from 'astro:content';
-import { getLangFromSlug, normalizeSlug, stripLangFromSlug } from '../util/language';
+import { getPaths } from '../lib/getPaths';
+import { getFallbacks } from '../lib/getFallbacks';
 
 export interface Props {
 	content: {
@@ -13,26 +12,24 @@ export interface Props {
 		section: string;
 		description: string;
 	}
-	headings: MarkdownHeading[],
 	lang: string;
 }
 
 
-const { content, headings, lang } = Astro.props;
+const { content, lang } = Astro.props;
 
-const docs = await getCollection("docs")
+const collection = await getCollection("docs");
+const paths = getPaths(collection);
+const fallbacks = getFallbacks(collection);
+const joined = [...paths, ...fallbacks];
 const entries: Record<string, CollectionEntry<"docs">> = {};
-for (let i = 0; i < docs.length; i++) {
-	const article = docs[i];
-	let slugLanguage = getLangFromSlug(article.slug);
-
-	if (slugLanguage !== lang) {
+for (let i = 0; i < joined.length; i++) {
+	const { props } = joined[i];
+	console.log(props.page)
+	if ((props.page.locale != lang) && !props.fallback) {
 		continue;
 	}
-	const normalized = normalizeSlug(article.slug);
-	const slug = stripLangFromSlug(normalized)
-	article.slug = normalizeSlug(slug)
-	entries[slug] = article;
+	entries[props.page.slug] = props.page;
 }
 ---
 
