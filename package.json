@@ -1,30 +1,40 @@
 {
-	"name": "",
-	"type": "module",
-	"version": "0.0.1",
-	"scripts": {
-		"dev": "astro dev",
-		"start": "astro dev",
-		"build": "astro build",
-		"preview": "astro preview",
-		"astro": "astro"
-	},
-	"dependencies": {
-		"@astrojs/image": "^0.16.1",
-		"@astrojs/mdx": "^0.18.0",
-		"@astrojs/svelte": "^2.1.0",
-		"@astrojs/tailwind": "^3.1.0",
-		"@astropub/icons": "^0.2.0",
-		"astro": "^2.1.3",
-		"front-matter": "^4.0.2",
-		"fuse.js": "^6.6.2",
-		"rehype-mathjax": "^4.0.2",
-		"remark-math": "^5.1.1",
-		"svelte": "^3.54.0",
-		"tailwindcss": "^3.0.24"
-	},
-	"devDependencies": {
-		"@types/katex": "^0.16.0",
-		"sharp": "^0.31.3"
-	}
+  "name": "starlight-docs",
+  "private": true,
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "test": "start-server-and-test 'pnpm preview' http://localhost:4321 'pnpm pa11y'",
+    "pa11y": "pa11y-ci --sitemap 'http://localhost:4321/sitemap-0.xml' --sitemap-find 'https://starlight.astro.build' --sitemap-replace 'http://localhost:4321' --sitemap-exclude '/(de|zh-cn|fr|es|pt-br|it|id|ko|ru|tr|hi|da|uk)/.*'",
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "lunaria:build": "lunaria build"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.15.3",
+    "@astrojs/svelte": "^5.0.3",
+    "@astrojs/tailwind": "^5.1.0",
+    "@lunariajs/core": "^0.0.25",
+    "@types/culori": "^2.0.0",
+    "astro": "^4.0.1",
+    "culori": "^3.2.0",
+    "sharp": "^0.32.5",
+    "svelte": "^4.2.8",
+    "svelte-preprocess": "^5.1.3",
+    "tailwindcss": "^3.4.1"
+  },
+  "devDependencies": {
+    "@types/hast": "^3.0.3",
+    "hast-util-from-html": "^2.0.1",
+    "hast-util-to-string": "^3.0.0",
+    "hastscript": "^8.0.0",
+    "pa11y-ci": "^3.0.1",
+    "rehype": "^13.0.1",
+    "starlight-links-validator": "^0.5.1",
+    "start-server-and-test": "^2.0.0",
+    "unist-util-visit": "^5.0.0"
+  }
 }

@@ -1,0 +1,20 @@
+---
+export type Props = {
+	href: string;
+	title: string;
+	summary: string;
+}
+
+const { href, title, summary } = Astro.props;
+---
+
+<details class="rounded-lg border shadow-sm bg-white flex items-start flex-col my-4 w-fit gap-2 cursor-pointer">
+	<summary class="bg-white hover:bg-slate-50 active:bg-slate-100 transition-colors py-4 px-6 rounded-lg font-semibold text-lg">{title} - <a href={href}>{t("view-online")}</a></summary>
+	{summary && <div class="border-t border-b rounded-lg mb-8 px-6 py-4 w-full">
+		<h2>Summary</h2>
+		<p>{summary}</p>
+	</div>}
+	<div class="px-6 py-4">
+		<slot></slot>
+	</div>
+</details>

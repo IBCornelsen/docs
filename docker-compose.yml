@@ -1,0 +1,9 @@
+version: '3'
+services:
+  ibcornelsen-docs:
+    build: ./
+    command: bun run dev
+    environment:
+      PORT: 3001
+    volumes:
+      - ./:/docs
