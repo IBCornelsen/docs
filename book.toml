@@ -1,0 +1,6 @@
+[book]
+authors = ["Moritz Utcke"]
+language = "en"
+multilingual = false
+src = "src"
+title = "IBCornelsen Dokumentation"
